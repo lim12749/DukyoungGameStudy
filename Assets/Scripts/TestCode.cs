@@ -13,6 +13,6 @@ public class TestCode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log("유니티 깃허브 테스트중입니다.");
     }
 }
