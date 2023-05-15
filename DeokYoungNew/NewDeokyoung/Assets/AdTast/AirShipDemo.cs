@@ -4,28 +4,40 @@ using UnityEngine;
 
 public class AirShipDemo : MonoBehaviour
 {
-    public Transform AirShipModel;
-    public List<Transform> points;
-    public float speed;
-    int index = 0;
-
+    public Transform Head;
+    [SerializeField] float MoveSpeed;
+    [SerializeField] float trunSpeed = 180; //회전 속도
     [SerializeField] float distanceBetween = .2f;
-    [SerializeField] float trunSpeed = 180; //회전 속도 
+
     [SerializeField] List<GameObject> bodyParts = new List<GameObject>(); //스폰또는 관절 목록 
     [SerializeField] List<GameObject> SnakeBody = new List<GameObject>();
 
     float countUp = 0; //생성 주기 타이머
     [SerializeField] Vector3 aPos;
-    [SerializeField] Vector3 foword;
-    [SerializeField] Transform Head;
+    //[SerializeField] Vector3 foword;
+
+    [SerializeField] Vector3 nomaldir;
+    [SerializeField] Quaternion TransformDir;
+
+    [Header("Debug")]
+    public Transform DebugHead;
+    public Transform DebugCube1;
+    public Transform DebugCube_Chiled;
+    [SerializeField] Quaternion a;
+    [SerializeField] Quaternion b;
+    [SerializeField] Quaternion c;
 
     private void Start()
     {
-        foword = bodyParts[1].transform.localEulerAngles;
+        //foword = bodyParts[1].transform.localEulerAngles;
     }
 
     private void FixedUpdate()
     {
+        a = DebugHead.localRotation;
+        b = DebugCube1.localRotation;
+        c = DebugCube_Chiled.localRotation;
+
         //foword = SnakeBody[1].transform.localEulerAngles;
         if (bodyParts.Count>0)
         {
@@ -33,40 +45,51 @@ public class AirShipDemo : MonoBehaviour
         }
         MoveSnake();
     }
-    void MoveSnake()
+    //초기화
+    void Init()
     {
 
+    }
+    void MoveSnake()
+    {
         //move the Posiotn
-        SnakeBody[0].GetComponent<Rigidbody>().velocity = SnakeBody[0].transform.forward * speed * Time.deltaTime;
+        SnakeBody[0].GetComponent<Rigidbody>().velocity = SnakeBody[0].transform.forward * MoveSpeed * Time.deltaTime;
+
         //move the rotation inputs
         if (Input.GetAxis("Horizontal") != 0)
             SnakeBody[0].transform.Rotate(Vector3.up * trunSpeed * Time.deltaTime * Input.GetAxis("Horizontal"));
 
-        
-        Debug.Log(foword.z);
-        //바디에도 전달해주
+        MoveTail();
+    }
+    void MoveTail()
+    {
+
         if (SnakeBody.Count > 0)
         {
             for (int i = 1; i < SnakeBody.Count; i++)
             {
-   
+
                 MarkerManager markm = SnakeBody[i - 1].GetComponent<MarkerManager>();
                 SnakeBody[i].transform.position = markm.makerList[0].Position;
-
-                var dir = SnakeBody[i].transform.position - SnakeBody[0].transform.position;
-
+                //목표 - 나 = 내가 나가야할 방
+                nomaldir = SnakeBody[i-1].transform.position - SnakeBody[i].transform.position;
                 
-                SnakeBody[i].transform.rotation =
-                    Quaternion.Euler(aPos.x,
-                    markm.makerList[0].Rotation.y,
-                    aPos.x+foword.z);
-                SnakeBody[i].transform.LookAt(dir);
+                /*
+                        SnakeBody[i].transform.rotation =
+                            Quaternion.Euler(aPos.x,
+                            markm.makerList[0].Rotation.y,
+                            aPos.x+foword.z);
+                */
+                TransformDir = Quaternion.LookRotation(nomaldir.normalized);
+                SnakeBody[i].transform.rotation = TransformDir;
 
+                //SnakeBody[i].transform.LookAt(dir);
                 markm.makerList.RemoveAt(0);
             }
         }
+
     }
-    //
+
     void AddBodyParts()
     {
         //SnakeBody HeadAdd
@@ -119,28 +142,4 @@ public class AirShipDemo : MonoBehaviour
         }
      }
 
-    IEnumerator MoveDemo()
-    {
-
-        var target = points[1];
-
-        while (true)
-        {
-            AirShipModel.position += target.position * speed * Time.deltaTime;
-  
-            if (Vector3.Distance(target.position, AirShipModel.position) < 0.1f)
-            {
-                yield return new WaitForSeconds(0.01f);
-                index = ++index % points.Count;
-                target = points[index];
-               
-            }
-            else
-            {
-                Debug.Log("?");
-                yield return new WaitForSeconds(0.01f);
-            }
-
-        }
-    }
 }
