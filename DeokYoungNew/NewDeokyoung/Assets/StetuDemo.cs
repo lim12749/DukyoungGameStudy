@@ -5,6 +5,7 @@ using UnityEngine;
 public enum Option { NONE, HEILLING, DAMAGE}
 public class StetuDemo : MonoBehaviour
 {
+    /*
     public Player player;
     public Option state = Option.NONE;
 
@@ -43,4 +44,5 @@ public class StetuDemo : MonoBehaviour
             }
         }
     }
+    */
 }
