@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.083561435, g: 0.14067331, b: 0.08372296, a: 1}
+  m_IndirectSpecularColor: {r: 0.083561115, g: 0.14067252, b: 0.083722726, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -330,9 +330,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 813391371}
-  - component: {fileID: 813391370}
   - component: {fileID: 813391369}
   - component: {fileID: 813391368}
+  - component: {fileID: 813391373}
+  - component: {fileID: 813391372}
+  - component: {fileID: 813391374}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -369,24 +371,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &813391370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 813391367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c377adc91c575354ca2932417152e24c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  turnSpeed: 360
-  bulletPrefab: {fileID: 8808387091858986958, guid: 6325033c9bc9f434b91afb8741425c0e,
-    type: 3}
-  firePosition: {fileID: 1328576751}
-  bulletSpeed: 1000
 --- !u!4 &813391371
 Transform:
   m_ObjectHideFlags: 0
@@ -405,6 +389,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &813391372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813391367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e39b0bf0bfff5449140ae29a2c8ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 8808387091858986958, guid: 6325033c9bc9f434b91afb8741425c0e,
+    type: 3}
+  firePos: {fileID: 1328576751}
+--- !u!114 &813391373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813391367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 890dff84fde3c724a8bf4b6464fb78f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  turnSpeed: 90
+--- !u!114 &813391374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813391367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f558fff5e59d98643afd64c1de5fb92c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &899242505
 PrefabInstance:
   m_ObjectHideFlags: 0
