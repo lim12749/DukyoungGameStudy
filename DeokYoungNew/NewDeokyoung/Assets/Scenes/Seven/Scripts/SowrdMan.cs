@@ -9,7 +9,6 @@ namespace Seven{
         //생성자는 클래스 이름이랑 같고 리턴이 없으면 생성자
         public SowrdMan() : base(PlayerType.SowrdMan) //생성자에서 부모생성자 호출
         {
-            Debug.Log("기본 생성자 호출");
             //type = PlayerType.SowrdMan; //우리가 이렇게 새로 플레이어를 만들면 문제가 생길 수 있음
             SetInfo(100, 10);   
         }
