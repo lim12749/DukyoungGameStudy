@@ -11,7 +11,7 @@ public class PLayerController : MonoBehaviour
     private CharacterController myCC;
     private PlayerAnimator playerAnim;
     public float moveSpeed;
-    public BoxCollider AttackRange;
+    //public BoxCollider AttackRange;
     private void Start()
     {
         viewForward = Camera.main.transform.forward;
@@ -22,19 +22,19 @@ public class PLayerController : MonoBehaviour
 
         myCC = GetComponent<CharacterController>();
         playerAnim = GetComponent<PlayerAnimator>();
-        AttackRange = GetComponent<BoxCollider>();
-        AttackRange.enabled = false;
+       //AttackRange = GetComponent<BoxCollider>();
+        //AttackRange.enabled = false;
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playerAnim.AttackAnimStart();
-            AttackRange.enabled = true;
+           // AttackRange.enabled = true;
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
-            AttackRange.enabled = false;
+            //AttackRange.enabled = false;
         }
   
     }

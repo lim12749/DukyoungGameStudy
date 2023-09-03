@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    private Transform Target;
-    public float T;
+
+    public float ArrowSpeed;
+    public Transform Target;
+    private Vector3 dir;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,13 +28,12 @@ public class Arrow : MonoBehaviour
     }
     private void ArrowLocomotion()
     {
-        /*
-        T += Time.deltaTime;
-        float duration = 0.5f;
-        float t01 = T / duration;
-        */
+        //방향으로 곧게 나감
+        //transform.Translate(Vector3.forward * Time.deltaTime);
+        dir = Target.position- transform.position; //방향공식 목표 - 내위치 = 목표방향
+        dir.Normalize();
 
-        Vector3 pos = Vector3.Lerp(transform.position, Target.localPosition, 0.1f);
-        transform.position += pos;
+        transform.position += dir* ArrowSpeed * Time.deltaTime;
+        transform.LookAt(Target);
     }
 }

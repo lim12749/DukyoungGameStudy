@@ -12,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Start()
     {
         isWork = false;
-        myAnimator = GetComponent<Animator>();
+        myAnimator = GetComponentInChildren<Animator>();
 
     }
     private void Update()
@@ -29,6 +29,6 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void AttackAnimStart()
     {
-        myAnimator.SetTrigger("Attack");
+        myAnimator.SetTrigger("attack");
     }
 }
