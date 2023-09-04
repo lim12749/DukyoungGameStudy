@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-
     private Vector3 velcity;
     public bool isWork { get; set; }
     private Animator myAnimator;

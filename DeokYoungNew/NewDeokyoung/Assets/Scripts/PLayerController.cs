@@ -11,7 +11,9 @@ public class PLayerController : MonoBehaviour
     private CharacterController myCC;
     private PlayerAnimator playerAnim;
     public float moveSpeed;
-    //public BoxCollider AttackRange;
+
+
+    
     private void Start()
     {
         viewForward = Camera.main.transform.forward;
@@ -27,15 +29,6 @@ public class PLayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerAnim.AttackAnimStart();
-           // AttackRange.enabled = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            //AttackRange.enabled = false;
-        }
   
     }
     private void FixedUpdate()

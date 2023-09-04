@@ -6,7 +6,7 @@ public class Monster : MonoBehaviour
 {
     public int hp;
     public Slider hpUI;
-
+    private UnityEngine.AI.NavMeshAgent pathFinder; // ï¿½ï¿½Î°ï¿½ï¿½ AI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private void Start()
     {
         hpUI.maxValue = hp;
@@ -22,7 +22,7 @@ public class Monster : MonoBehaviour
     }
     public void Die()
     {
-        Debug.Log("Á×À½");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½");
         Destroy(this.gameObject);
     }
 }

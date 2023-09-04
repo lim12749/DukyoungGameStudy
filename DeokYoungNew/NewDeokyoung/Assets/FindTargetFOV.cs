@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class FindTargetFOV : MonoBehaviour
 {
-    public float Radius;
+	public PlayerAnimator playerAnim;
+	public float Radius;
 
     public float viewAngle;
 	public Vector3 doAttackAngle;
@@ -42,7 +43,7 @@ public class FindTargetFOV : MonoBehaviour
 			yield return new WaitForSeconds(attackDelaySpeed);
 			if(attackTarget)
             {
-				Debug.Log("공격대상 있음 ");
+				playerAnim.AttackAnimStart();
 				Attack();
             }
 			else
@@ -55,7 +56,6 @@ public class FindTargetFOV : MonoBehaviour
 	void Attack()
     {
 		var item = Instantiate(ArrowObject, InstancPos.position,Quaternion.identity).GetComponent<Arrow>();
-
 		item.SetLocomotion(attackTarget.transform);
 	
     }
@@ -94,7 +94,6 @@ public class FindTargetFOV : MonoBehaviour
 					closest_target = swaptarget; //가까운 타겟은 타겟 배열의 값을 넣음
 				}
 			}
-			
 		}
 		if (count == 0)
 		{
