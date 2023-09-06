@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class Monster : MonoBehaviour
+public class Monster : LivingEntity
 {
     public int hp;
     public Slider hpUI;
     private UnityEngine.AI.NavMeshAgent pathFinder; // ��ΰ�� AI ������Ʈ
+    public GameObject SelectImage;
     private void Start()
     {
         hpUI.maxValue = hp;

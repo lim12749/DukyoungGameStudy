@@ -56,7 +56,7 @@ public class FindTargetFOV : MonoBehaviour
 	void Attack()
     {
 		var item = Instantiate(ArrowObject, InstancPos.position,Quaternion.identity).GetComponent<Arrow>();
-		item.SetLocomotion(attackTarget.transform);
+		item.SetLocomotion(attackTarget.transform, InstancPos);
 	
     }
 
@@ -102,6 +102,7 @@ public class FindTargetFOV : MonoBehaviour
 		else
 		{
 			attackTarget = closest_target;//가장가까운 타겟의 오브젝트를 값대입
+			//attackTarget.GetComponent<Monster>().SelectImage.SetActive(true);
 		}
 	}
 
