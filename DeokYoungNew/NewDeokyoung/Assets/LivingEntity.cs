@@ -1,14 +1,22 @@
 using UnityEngine;
 using System; //이벤트 사용
 /// <summary>
-/// Player Monster share
+/// Player Monster share 
+/// 우리가 채력을 가지고 회복 할 수 있고 공격을 받을 수 있는 부분을 설정합니다.
 /// </summary>
-public class LivingEntity : MonoBehaviour
+/// 
+//
+internal interface IDamageeble
+{
+}
+
+public class LivingEntity : MonoBehaviour, IDamageeble
 {
 
     public float StartingHealth = 100f; //Setting Valuse
 
     //Auto-implemented properties 
+
     public float Health { get; protected set; } //Now Hp Value
 
     public bool Dead { get; protected set; } //Now Living
@@ -20,7 +28,7 @@ public class LivingEntity : MonoBehaviour
     //플레이시 부모 클래스에서 먼저 OnEnable가 실행됩니다
     //Start 함수 이전에 호출됩니다. 게임 플레이 또는 리셋시 한번 실행합니다
     //SetActive로도 활성화 됩니다,  생명체가 활성화될때 상태를 리셋
-    protected virtual void OnEnable()
+    protected virtual void OnEnable() 
     {
         Dead = false; //생성, 살아날때 상태를 죽지 않음으로 변경
 
@@ -61,3 +69,4 @@ public class LivingEntity : MonoBehaviour
         Dead = true;
     }
 }
+

@@ -948,7 +948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnim: {fileID: 291626723}
-  Radius: 10
+  Radius: 30
   viewAngle: 0
   doAttackAngle: {x: 0, y: 0, z: 0}
   attackTarget: {fileID: 0}

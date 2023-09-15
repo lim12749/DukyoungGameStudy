@@ -30,4 +30,8 @@ public class PlayerAnimator : MonoBehaviour
     {
         myAnimator.SetTrigger("attack");
     }
+    public void DieAnim()
+    {
+        myAnimator.SetTrigger("Die");
+    }
 }

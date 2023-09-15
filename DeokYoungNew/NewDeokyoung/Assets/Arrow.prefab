@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArrowSpeed: 5
+  SpwanPos: {fileID: 0}
   Target: {fileID: 0}
-  ArrowDamage: 10
+  ArrowDamage: 1
 --- !u!135 &13453908466314012
 SphereCollider:
   m_ObjectHideFlags: 0
