@@ -15,16 +15,20 @@ public class Arrow : MonoBehaviour
     {
         if (other.transform.CompareTag("Monster"))
         {
+
+            Debug.Log("????");
             var targetDamage = other.GetComponent<Monster>();
             targetDamage.SetDamage((int)ArrowDamage);
             Destroy(this.gameObject);
         }
     }
-    private void LateUpdate()
+    private void Update()
     {
-        ArrowLocomotion();
-
+        ArrowLocomotion(); //Arrow MoveFnc
+        //ArrowForwadLocomotion();
     }
+ 
+    //move to direction init
     public void SetLocomotion(Transform _target, Transform spwanPos)
     {
         SpwanPos = spwanPos;
@@ -44,15 +48,19 @@ public class Arrow : MonoBehaviour
 
         transform.position = pos + arc;
 
+   
+    }
+    private void ArrowForwadLocomotion()
+    {
         //아래 코드는 곧게 나가게
         //방향으로 곧게 나감
         //transform.Translate(Vector3.forward * Time.deltaTime);
-        /*
+        
         dir = Target.position- transform.position; //방향공식 목표 - 내위치 = 목표방향
         dir.Normalize();
 
         transform.position += dir *ArrowSpeed* Time.deltaTime;
-       */
+       
         //transform.LookAt(Target);
     }
 }

@@ -52,6 +52,7 @@ public class PLayerController : MonoBehaviour
         }
 
     }
+    /*
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name);
@@ -60,4 +61,5 @@ public class PLayerController : MonoBehaviour
             other.GetComponent<Monster>().SetDamage(1);
         }
     }
+    */
 }
