@@ -12,14 +12,10 @@ internal interface IDamageeble
 
 public class LivingEntity : MonoBehaviour, IDamageeble
 {
-
-    public float StartingHealth = 100f; //Setting Valuse
-
+    public float StartingHealth = 100f; //Setting Valuse //시작 초기 셋팅 체력
     //Auto-implemented properties 
-
-    public float Health { get; protected set; } //Now Hp Value
-
-    public bool Dead { get; protected set; } //Now Living
+    public float Health { get; protected set; } //Now Hp Value //현재 체력
+    public bool Dead { get; protected set; } //Now Living //현재 죽었는지의 상태
 
     //델리게이트 :  입력과 출력이 없는 메서드를 가르킬수 있다.
     //등록된 메서드는 원하는 시점에 매번 실행 할 수 있다.
@@ -43,6 +39,10 @@ public class LivingEntity : MonoBehaviour, IDamageeble
         {
             Die(); //사망 처리 함수 실행
         }
+    }
+    public virtual void OnDamage()
+    {
+
     }
     // 체력을 회복하는 기능
     public virtual void RestoreHealth(float newHealth)

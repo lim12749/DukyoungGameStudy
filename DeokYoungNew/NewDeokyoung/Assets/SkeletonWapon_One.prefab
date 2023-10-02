@@ -899,12 +899,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingHealth: 100
   DieTime: 2
-  hp: 0
+  hp: 100
   MonsterAnim: {fileID: 5964094709783560455}
   MonsterRigidbody: {fileID: 2468889827088785188}
   MonsterCollider: {fileID: 2468889827088785189}
   pathFinder: {fileID: 2468889827088785190}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!195 &2468889827088785190
 NavMeshAgent:
   m_ObjectHideFlags: 0

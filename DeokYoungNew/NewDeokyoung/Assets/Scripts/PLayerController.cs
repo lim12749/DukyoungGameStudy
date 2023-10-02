@@ -11,8 +11,6 @@ public class PLayerController : MonoBehaviour
     private CharacterController myCC;
     private PlayerAnimator playerAnim;
     public float moveSpeed;
-
-
     
     private void Start()
     {
@@ -24,13 +22,8 @@ public class PLayerController : MonoBehaviour
 
         myCC = GetComponent<CharacterController>();
         playerAnim = GetComponent<PlayerAnimator>();
-       //AttackRange = GetComponent<BoxCollider>();
-        //AttackRange.enabled = false;
     }
-    private void Update()
-    {
-  
-    }
+
     private void FixedUpdate()
     {
         PlayerMove();
@@ -50,16 +43,5 @@ public class PLayerController : MonoBehaviour
 
             myCC.Move(direction * moveSpeed);
         }
-
     }
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name);
-        if(other.tag =="Monster")
-        {
-            other.GetComponent<Monster>().SetDamage(1);
-        }
-    }
-    */
 }

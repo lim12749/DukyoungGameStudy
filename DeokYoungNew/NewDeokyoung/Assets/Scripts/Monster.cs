@@ -13,7 +13,8 @@ public class Monster : LivingEntity
     //public Slider hpUI;
     public UnityEngine.AI.NavMeshAgent pathFinder;
     public GameObject Target;
-    public bool isMove = false; 
+    public bool isMove = false;
+    public bool isRun = false;
 
     private void Start()
     {
@@ -22,11 +23,27 @@ public class Monster : LivingEntity
     private void Update()
     {
         pathFinder.SetDestination(Target.transform.position);
-        MonsterMoveAnim();
+        if (Vector3.Distance(Target.transform.position, transform.position) < 3f)
+        {
+            isRun = false;
+            isMove = true;
+            MonsterMoveAnim();
+        }
+        else
+        {
+            isRun = true;
+            isMove = false;
+            MonsterRunAnim();
+        }
+        
+    }
+    public void MonsterRunAnim()
+    {
+        MonsterAnim.SetBool("IsRun", isRun);
     }
     public void MonsterMoveAnim()
     {
-        isMove = pathFinder.velocity != Vector3.zero;
+        //isMove = pathFinder.velocity != Vector3.zero;
 
         MonsterAnim.SetBool("IsMove", isMove);
     }
@@ -51,5 +68,13 @@ public class Monster : LivingEntity
         pathFinder.Stop();
 
         Destroy(this.gameObject, DieTime);
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("충돌");
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log("충돌중");
     }
 }

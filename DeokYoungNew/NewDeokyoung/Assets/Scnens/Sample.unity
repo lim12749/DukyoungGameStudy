@@ -2678,6 +2678,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!54 &395339012
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8522,6 +8524,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!54 &1276135441
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12058,6 +12062,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!65 &1857497488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13073,6 +13079,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!65 &2032692061
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13207,6 +13215,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!54 &2041723134
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13725,6 +13735,8 @@ MonoBehaviour:
   MonsterCollider: {fileID: 0}
   pathFinder: {fileID: 0}
   Target: {fileID: 0}
+  isMove: 0
+  isRun: 0
 --- !u!54 &2111076148
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14052,6 +14064,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2468889827088785187, guid: 942614fdd37097d4db7ad4557b8ad994,
+        type: 3}
+      propertyPath: hp
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2468889827088785187, guid: 942614fdd37097d4db7ad4557b8ad994,
         type: 3}
       propertyPath: Target
