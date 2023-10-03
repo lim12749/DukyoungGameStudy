@@ -16,6 +16,12 @@ public class Monster : LivingEntity
     public bool isMove = false;
     public bool isRun = false;
 
+    [SerializeField] private LivingEntity targetEntity; // 추적할 대상
+
+    [Header("Attack Pramiter")]
+    public float damage = 20f; // 공격력
+    public float timeBetAttack = 0.5f; // 공격 간격
+    private float lastAttackTime; // 마지막 공격 시점
     private void Start()
     {
         //hpUI.maxValue = hp;
@@ -75,6 +81,31 @@ public class Monster : LivingEntity
     }
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("충돌중");
+        // 자신이 사망하지 않았으며,
+        // 최근 공격 시점에서 timeBetAttack 이상 시간이 지났다면 공격 가능
+
+        Debug.Log(other.gameObject.name);
+        if (!Dead && Time.time >= lastAttackTime + timeBetAttack)
+        {
+            Debug.Log("d1");
+            // 상대방으로부터 LivingEntity 타입을 가져오기 시도
+
+                LivingEntity attackTarget = other.GetComponent<LivingEntity>();
+                // 상대방의 LivingEntity가 자신의 추적 대상이라면 공격 실행
+                if (attackTarget != null && attackTarget == targetEntity)
+                {
+                    // 최근 공격 시간을 갱신
+                    lastAttackTime = Time.time;
+                    Debug.Log("d2");
+
+                    // 상대방의 피격 위치와 피격 방향을 근삿값으로 계산
+                    // Vector3 hitPoint = other.ClosestPoint(transform.position);
+                    // Vector3 hitNormal = transform.position - other.transform.position;
+
+                    // 공격 실행
+                    attackTarget.OnDamage(damage);
+                }
+                    
+        }
     }
 }

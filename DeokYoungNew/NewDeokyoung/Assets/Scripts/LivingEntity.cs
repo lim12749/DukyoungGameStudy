@@ -34,16 +34,13 @@ public class LivingEntity : MonoBehaviour, IDamageeble
     public virtual void OnDamage(float damage )
     {
         Health -= damage; // 데미지 적용
-
+         
         if(Health<=0 &&!Dead)
         {
             Die(); //사망 처리 함수 실행
         }
     }
-    public virtual void OnDamage()
-    {
 
-    }
     // 체력을 회복하는 기능
     public virtual void RestoreHealth(float newHealth)
     {
