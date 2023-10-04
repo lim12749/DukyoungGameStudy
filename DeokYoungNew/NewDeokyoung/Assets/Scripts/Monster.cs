@@ -17,6 +17,19 @@ public class Monster : LivingEntity
     public bool isRun = false;
 
     [SerializeField] private LivingEntity targetEntity; // 추적할 대상
+    public LayerMask whatIsTarget; // 추적 대상 레이어
+
+    private bool hasTarget
+    {
+        get
+        {
+            if(targetEntity !=null && !targetEntity.Dead)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 
     [Header("Attack Pramiter")]
     public float damage = 20f; // 공격력
@@ -24,10 +37,13 @@ public class Monster : LivingEntity
     private float lastAttackTime; // 마지막 공격 시점
     private void Start()
     {
-        //hpUI.maxValue = hp;
+        // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
+        StartCoroutine(UpdatePath());
     }
     private void Update()
     {
+        /*
+        //목표 찾는걸 업데이트 해야합니다 
         pathFinder.SetDestination(Target.transform.position);
         if (Vector3.Distance(Target.transform.position, transform.position) < 3f)
         {
@@ -40,8 +56,46 @@ public class Monster : LivingEntity
             isRun = true;
             isMove = false;
             MonsterRunAnim();
+        }*/
+    }
+    private IEnumerator UpdatePath()
+    {
+        //몬스터가 살아있는 경우 무한루프를 돌립니다.
+        while(!Dead)
+        {
+            if(hasTarget)
+            {
+                //추적대상이 존재 : 경로를 갱신하고 AI 이동을 계속 진행
+                pathFinder.isStopped = false;
+                pathFinder.SetDestination(targetEntity.transform.position);
+            }
+            else //추적대상이 없으면
+            {
+                //Ai를 이동 중지 시킵니다.
+                pathFinder.isStopped = true;
+
+                //20유닛의 반지름을 가진 가상의 구를 그렸을때, 구와 겹치는 모든 콜라이더를 가져옵니다.
+                //단, whatIsTarget 레이어를 가진 콜라이더만 가져오도록 필터링 합니다.
+                //중심, 반지름 , 레이어 검출
+                Collider[] colliders = Physics.OverlapSphere(transform.position, 20f, whatIsTarget);
+
+                for(int i=0; i<colliders.Length;i++)
+                {
+                    var livingEntity = colliders[i].GetComponent<LivingEntity>(); //컴포넌트 기능 가져와서 검출에 사용
+
+                    //Living 컴포넌트가 존재하고 해당 Living이 살아있는지 체크
+                    if (livingEntity != null && !livingEntity.Dead)
+                    {
+                        //추적대상을 해당 livingEntity로 설정
+                        targetEntity = livingEntity;
+
+                        //for문을 즉시 정지
+                        break;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(0.25f); //0.25초씩 지연하고 무한반복을 돌립니다.
         }
-        
     }
     public void MonsterRunAnim()
     {

@@ -6,8 +6,10 @@ public class PlayerHealth : LivingEntity
 {
     //임시로 사용할 내 HP
     public Slider healthSlider; // 체력을 표시할 UI 슬라이더 머리 위에 작게 띄어두고 감소하는 식으로 사용할 예정
-
-
+    public Animator animator;
+    public PLayerController playerMovecontroller;
+    public FindTargetFOV playerFOV;
+    public PlayerAnimator playerAnimator;
     protected override void OnEnable()
     {
         base.OnEnable();    // LivingEntity의 OnEnable() 실행 (상태 초기화)
@@ -18,7 +20,9 @@ public class PlayerHealth : LivingEntity
 
         healthSlider.value = Health; //현재 체력은 base에서 셋팅한 초기 채력으로 셋팅함
 
-
+        //움직일수있게하는 key
+        playerMovecontroller.enabled = true;
+        playerFOV.enabled = true;
         // 플레이어 조작을 받는 컴포넌트들 활성화
         //playerMovement.enabled = true; //나중에 죽거나 새로 시작했을때 값을 사용합니다
         //playerShooter.enabled = true;
@@ -37,7 +41,6 @@ public class PlayerHealth : LivingEntity
 
         //체력은 변동됬지만 슬라이더의 시각적으로 보여지는 체력도 변경
         healthSlider.value = Health;
-
     }
     public override void Die()
     {
@@ -45,6 +48,14 @@ public class PlayerHealth : LivingEntity
 
         // 체력 슬라이더 비활성화 죽었을때 다른 동작을 못하게 막는 용도
         healthSlider.gameObject.SetActive(false);
+
+        //사망 애니메이션 재생
+        //animator.SetTrigger("death");
+         
+        //사망하면 콜라이더 및 동작 못하게 해야함
+        playerMovecontroller.enabled = false;
+        playerFOV.enabled = false;
+        //playerAnimator.enabled = false;
 
 
     }

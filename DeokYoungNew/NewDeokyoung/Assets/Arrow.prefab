@@ -50,7 +50,7 @@ MonoBehaviour:
   ArrowSpeed: 5
   SpwanPos: {fileID: 0}
   Target: {fileID: 0}
-  ArrowDamage: 1
+  ArrowDamage: 10
 --- !u!135 &13453908466314012
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -3943,6 +3943,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 611804084}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &614108416 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3928582952827217561, guid: acf6d207bd792084398f9805a8ee9f3b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3928582953408207770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8102922762d7242fba20c73069485809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &614621025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11832,6 +11844,12 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!95 &1815063422 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3928582953816340016, guid: acf6d207bd792084398f9805a8ee9f3b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3928582953408207770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1832711387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14007,6 +14025,11 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3928582952827217561, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: attackDelaySpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3928582953162818885, guid: acf6d207bd792084398f9805a8ee9f3b,
         type: 3}
       propertyPath: m_Name
@@ -14016,6 +14039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928582953162818937, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3928582953162818938, guid: acf6d207bd792084398f9805a8ee9f3b,
         type: 3}
@@ -14072,11 +14100,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3928582953162818942, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928582953408207772, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928582953408207772, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: playerFOV
+      value: 
+      objectReference: {fileID: 614108416}
     - target: {fileID: 3928582953408207772, guid: acf6d207bd792084398f9805a8ee9f3b,
         type: 3}
       propertyPath: healthSlider
       value: 
       objectReference: {fileID: 1546511351}
+    - target: {fileID: 3928582953408207772, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 1815063422}
+    - target: {fileID: 3928582953408207772, guid: acf6d207bd792084398f9805a8ee9f3b,
+        type: 3}
+      propertyPath: playerMovecontroller
+      value: 
+      objectReference: {fileID: 3928582953408207774}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acf6d207bd792084398f9805a8ee9f3b, type: 3}
 --- !u!1 &3928582953408207771 stripped
@@ -14095,6 +14148,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5faf93017493f23419e89afd73858082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3928582953408207774 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3928582953162818942, guid: acf6d207bd792084398f9805a8ee9f3b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3928582953408207770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928582953408207771}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d105e699326e77a49970d9e330b61b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &5135567698705579315
