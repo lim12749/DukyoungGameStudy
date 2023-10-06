@@ -17,8 +17,8 @@ public class Arrow : MonoBehaviour
         {
 
             Debug.Log("????");
-            var targetDamage = other.GetComponent<Monster>();
-            targetDamage.SetDamage((int)ArrowDamage);
+            //var targetDamage = other.GetComponent<Monster>();
+           // targetDamage.SetDamage((int)ArrowDamage);
             Destroy(this.gameObject);
         }
     }
