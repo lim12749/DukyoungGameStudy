@@ -807,6 +807,7 @@ GameObject:
   - component: {fileID: 2468889827088785189}
   - component: {fileID: 2468889827088785187}
   - component: {fileID: 2468889827088785190}
+  - component: {fileID: 481899060}
   m_Layer: 6
   m_Name: SkeletonWapon_One
   m_TagString: Monster
@@ -836,7 +837,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: -165, z: 0}
 --- !u!95 &5964094709783560455
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -853,8 +854,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!54 &2468889827088785188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -907,6 +907,12 @@ MonoBehaviour:
   Target: {fileID: 0}
   isMove: 0
   isRun: 0
+  targetEntity: {fileID: 0}
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 0
+  damage: 20
+  timeBetAttack: 0.5
 --- !u!195 &2468889827088785190
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -929,6 +935,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &481899060
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5347673711371734842}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.55, z: 0.38}
 --- !u!1 &5539526321781354687
 GameObject:
   m_ObjectHideFlags: 0
