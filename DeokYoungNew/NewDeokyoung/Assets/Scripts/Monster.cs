@@ -85,7 +85,7 @@ public class Monster : LivingEntity
         // 최근 공격 시점에서 timeBetAttack 이상 시간이 지났다면 공격 가능
 
         Debug.Log(other.gameObject.name);
-        if (!Dead && Time.time >= lastAttackTime + timeBetAttack)
+        if (!dead && Time.time >= lastAttackTime + timeBetAttack)
         {
             Debug.Log("d1");
             // 상대방으로부터 LivingEntity 타입을 가져오기 시도
