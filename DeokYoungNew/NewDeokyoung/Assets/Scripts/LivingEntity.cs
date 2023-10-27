@@ -1,5 +1,6 @@
 using UnityEngine;
 using System; //이벤트 사용
+using Mono.Cecil.Cil;
 /// <summary>
 /// Player Monster share 
 /// 우리가 채력을 가지고 회복 할 수 있고 공격을 받을 수 있는 부분을 설정합니다.
@@ -8,6 +9,7 @@ using System; //이벤트 사용
 //
 internal interface IDamageeble
 {
+
 }
 
 public class LivingEntity : MonoBehaviour, IDamageeble
@@ -56,9 +58,11 @@ public class LivingEntity : MonoBehaviour, IDamageeble
     // 사망 처리
     public virtual void Die()
     {
+        Debug.Log("죽음 실행");
         // onDeath 이벤트에 등록된 메서드가 있다면 실행
         if (OnDeath != null)
         {
+            Debug.Log("이벤트 있음");
             OnDeath(); //함수를 등록해두고 일괄적으로 실행 합니다
         }
 

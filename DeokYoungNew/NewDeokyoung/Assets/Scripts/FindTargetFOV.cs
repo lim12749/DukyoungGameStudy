@@ -84,11 +84,11 @@ public class FindTargetFOV : MonoBehaviour
 			if (Physics.Raycast(transform.position, dirToTarget, dstToTarget)) //타겟이 있을경우 내위치와 백터 방향, 백터 거리, 벽이면
 			{
 				count++; //들어온 오브젝트가 있다면 카운트를 추가한다
-				Debug.Log("count변수 Counting  " + count);
+				//Debug.Log("count변수 Counting  " + count);
 				visibleTargets.Add(target); //타겟을 리스트에 추가함
 				if (dstToTarget < closest_dst)
 				{
-					Debug.Log("closet_dst값이 참이면");
+					//Debug.Log("closet_dst값이 참이면");
 					doAttackAngle = dirToTarget; //가장가까운 몬스터와의 거리 포지션
 					closest_dst = dstToTarget; //거리값
 					closest_target = swaptarget; //가까운 타겟은 타겟 배열의 값을 넣음

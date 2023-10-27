@@ -15,10 +15,9 @@ public class Arrow : MonoBehaviour
     {
         if (other.transform.CompareTag("Monster"))
         {
-
-            Debug.Log("????");
             var targetDamage = other.GetComponent<Monster>();
-            targetDamage.SetDamage((int)ArrowDamage);
+            //targetDamage.SetDamage((int)ArrowDamage);
+            targetDamage.OnDamage(ArrowDamage);
             Destroy(this.gameObject);
         }
     }
