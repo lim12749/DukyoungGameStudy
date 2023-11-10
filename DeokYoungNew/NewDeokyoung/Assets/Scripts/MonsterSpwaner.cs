@@ -35,13 +35,12 @@ public class MonsterSpwaner : MonoBehaviour
         {
             SpwanWave();
         }
+        UpdateUI();
     }
     private void UpdateUI()
     {
         // 현재 웨이브와 남은 적의 수 표시
-
-
-
+        UiManager.instance.UpdateWaveText(Wave, monsters.Count);
     }
 
     private void SpwanWave()

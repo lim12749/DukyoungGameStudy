@@ -48,7 +48,7 @@ public class PlayerHealth : LivingEntity
 
         playerMovecontroller.enabled = false;
         playerFOV.enabled = false;
-        //playerAnimator.enabled = false;
+
 
 
     }

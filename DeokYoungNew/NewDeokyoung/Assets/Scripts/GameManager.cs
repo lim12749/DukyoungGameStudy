@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int Score = 0; //KillPoint;
-
     public bool isGameOver { get; private set; }
     private void Awake()
     {
@@ -38,16 +36,17 @@ public class GameManager : MonoBehaviour
         //is not GameOver
         if (!isGameOver)
         {
-            Score += count;
             //UI Update
+            UiManager.instance.UpdateScoreText(count);
         }
     }
     public void EndGame()
     {
 
-        isGameOver = true; 
+        isGameOver = true;
 
         //UnEnable isGameOverUI
+        UiManager.instance.SetActiveGameoverUI(true);
     }
 
 }

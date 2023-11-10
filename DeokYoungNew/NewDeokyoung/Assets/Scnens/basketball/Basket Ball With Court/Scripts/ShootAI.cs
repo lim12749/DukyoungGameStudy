@@ -67,7 +67,7 @@ public class ShootAI : Shoot
 		if (col.name == "DC" && UC) {
 			BasSucess = true;
 			scores++;
-			base.UiM.UpdateScores (scores);
+			//base.UiM.UpdateScores (scores);
 		}
 	}
 	protected override void Awake ()
@@ -82,7 +82,7 @@ public class ShootAI : Shoot
 	IEnumerator timereduction(){			// reduce the time 
 		yield return new WaitForSeconds (0.1f);
 		time = time -0.1f;
-		base.UiM.reduceSlider (time);
+		//base.UiM.reduceSlider (time);
 		if (time > 0) {
 			StartCoroutine (timereduction ());
 		} else {
@@ -96,9 +96,9 @@ public class ShootAI : Shoot
 	}
 
 	public void replay(){
-		base.UiM.UpdateScores (0);
+		//base.UiM.UpdateScores (0);
 		if (IsTimed) { // resuce the time bar if time is enabled
-			base.UiM.reduceSlider (time);
+			//base.UiM.reduceSlider (time);
 		}
 		gameover.SetActive (false);
 		reset ();	
