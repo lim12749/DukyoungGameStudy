@@ -52,7 +52,7 @@ namespace BasketBallGame
         
             if (direction!= Vector3.zero)
             {
-                //방향을 바라보게합니다
+               
                 transform.forward = direction;
 
                 m_characterController.Move(direction * MoveSpeed);
@@ -62,7 +62,7 @@ namespace BasketBallGame
         {
             if(Input.GetKey(KeyCode.LeftShift))
             {
-                Debug.Log("누르는중");
+                Debug.Log("????????");
             }
         }
     }
