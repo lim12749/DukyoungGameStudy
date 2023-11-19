@@ -9,6 +9,8 @@ TagManager:
   - Monster
   - Ground
   - BasketBall
+  - Area
+  - Enemy
   layers:
   - Default
   - TransparentFX
