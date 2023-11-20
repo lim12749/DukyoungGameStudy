@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Survivor{
     public class PoolManager : MonoBehaviour
     {
-        //ÇÁ¸®ÆÕ º¸°ü º¯¼ö
+        //í”„ë¦¬íŒ¹ ë³´ê´€ ë³€ìˆ˜
         public GameObject[] Prefabs;
-        //Ç®´ã´ç ¸®½ºÆ®
+        //í’€ë‹´ë‹¹ ë¦¬ìŠ¤íŠ¸
         List<GameObject>[] Enemys;
 
         private void Awake()
@@ -16,7 +16,7 @@ namespace Survivor{
 
             for (int index = 0; index < Enemys.Length; index++)
             {
-                Enemys[index]= new List<GameObject> ();//ÃÊ±âÈ­
+                Enemys[index]= new List<GameObject> ();//ì´ˆê¸°í™”
             }
         }
         public GameObject Get(int index)

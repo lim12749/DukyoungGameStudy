@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace Survivor{
         }
         private void FlipSprite()
         {
-            //¸ñÇ¥ xÃà °ª°ú ÀÚ½ÅÀÇ xÃà °ªÀ» ºñ±³ÇÏ¿© ÀÛÀ¸¸é true°¡ µÇµµ·ÏÇÔ
+            //ï¿½ï¿½Ç¥ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ trueï¿½ï¿½ ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½
             m_sprites.flipX = target.position.x < m_rigid.position.x;
         }
         private void Locomotion()
@@ -52,7 +53,7 @@ namespace Survivor{
             Vector2 dirVec = target.position - m_rigid.position;
             Vector2 nectVec = dirVec.normalized * speed * Time.fixedDeltaTime;
             m_rigid.MovePosition(m_rigid.position + nectVec);
-            m_rigid.velocity = Vector2.zero; //¹°¸®¼Óµµ°¡ ÀÌµ¿¿¡ ¿µ¾çÀ» ÁÖÁö¾Ê°ÔÇÔ.
+            m_rigid.velocity = Vector2.zero; //ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ê°ï¿½ï¿½ï¿½.
         }
         public void Init(SpwanData spwanData)
         {
@@ -60,6 +61,27 @@ namespace Survivor{
             speed = spwanData.Speed;
             maxHealth = spwanData.Health;
             Health = spwanData.Health;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if(!other.CompareTag("Bullet"))
+                return;
+            this.Health -= other.GetComponent<Bullet>().damage;
+
+            if (Health > 0)
+            {
+                Debug.Log("ì•„ì§ ì²´ë ¥ ë†’ìŒ");
+            }
+            else
+            {
+                Dead();
+            }
+        }
+
+        private void Dead()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

@@ -11,6 +11,7 @@ TagManager:
   - BasketBall
   - Area
   - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
