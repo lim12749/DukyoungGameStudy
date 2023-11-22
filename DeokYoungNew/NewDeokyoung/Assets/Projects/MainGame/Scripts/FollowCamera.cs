@@ -8,8 +8,7 @@ public class FollowCamera : MonoBehaviour
         [SerializeField] Vector3 offset;
         [SerializeField] Vector3 rotateOffset;
         private Transform m_myTransform;
-        
-        public Transform FollowTarget;
+        private Transform FollowTarget;
 
         private void Start()
         {
