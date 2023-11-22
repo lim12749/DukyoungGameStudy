@@ -40,5 +40,14 @@ namespace MainGame
             Vector3 nextVec =  new Vector3(inputVec.x, 0f, inputVec.y) * moveSpeed * Time.deltaTime;
             m_Rigidbody.MovePosition(m_Rigidbody.position + nextVec);
         }
+        void OnCollisionEnter(Collision col)
+        {
+            if (col.collider.tag == "Meteor")
+            {
+                AudioManager.instance.Play("PlayerDeath");
+
+                Destroy(gameObject);
+            }
+        }
     }
 }
