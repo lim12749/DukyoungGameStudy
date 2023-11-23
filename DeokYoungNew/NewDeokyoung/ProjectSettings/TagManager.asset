@@ -7,6 +7,11 @@ TagManager:
   - Optical
   - Score
   - Monster
+  - Ground
+  - BasketBall
+  - Area
+  - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
