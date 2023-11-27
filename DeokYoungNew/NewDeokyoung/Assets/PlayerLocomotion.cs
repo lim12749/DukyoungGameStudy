@@ -4,10 +4,13 @@ using UnityEngine.InputSystem;
 public class PlayerLocomotion : MonoBehaviour
 {
     public float moveSpeed;
+
+    public Transform camArm;
     private PlayerKeyInput _keyInput;
     private PlayerAnimationController _animation;
     private Rigidbody _rigidbody;
-
+    
+    
     private Vector3 direction;
     private void Awake()
     {
@@ -25,10 +28,12 @@ public class PlayerLocomotion : MonoBehaviour
     }
     private void PlayerMovement()
     {
+        Debug.DrawRay(camArm.position, camArm.forward,Color.red);
+        
         direction = new Vector3(_keyInput.InputVector.x, 0f, _keyInput.InputVector.y);
         var mag = direction.magnitude;
 
-        _animation.WalkAnim(direction);
+        //_animation.WalkAnim(direction);
         //transform.position += _animation._playerAnimator.deltaPosition;
         //PlayerRotation(direction);
         _rigidbody.MovePosition(transform.position + direction * Time.deltaTime *moveSpeed);

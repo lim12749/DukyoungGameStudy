@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
-using TreeEditor;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
