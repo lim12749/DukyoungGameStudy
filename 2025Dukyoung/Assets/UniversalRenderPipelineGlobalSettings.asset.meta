@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: eabc9546105bf4accac1fd62a63e88e6
-timeCreated: 1487337779
-licenseType: Store
-DefaultImporter:
+guid: 11ab80a3df68b2244b3d70c774a36cd7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 151986
   packageName: 'Creator Kit: Beginner Code | URP'
   packageVersion: 2.0
-  assetPath: Assets/TutorialInfo/Layout.wlt
+  assetPath: Assets/UniversalRenderPipelineGlobalSettings.asset
   uploadId: 690058
