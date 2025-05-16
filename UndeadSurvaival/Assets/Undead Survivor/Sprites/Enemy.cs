@@ -53,7 +53,7 @@ namespace Survivor{
             Vector2 dirVec = target.position - m_rigid.position;
             Vector2 nectVec = dirVec.normalized * speed * Time.fixedDeltaTime;
             m_rigid.MovePosition(m_rigid.position + nectVec);
-            m_rigid.velocity = Vector2.zero; //�����ӵ��� �̵��� ������ �����ʰ���.
+            m_rigid.linearVelocity = Vector2.zero; //�����ӵ��� �̵��� ������ �����ʰ���.
         }
         public void Init(SpwanData spwanData)
         {
