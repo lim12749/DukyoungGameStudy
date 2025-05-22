@@ -1,27 +1,29 @@
 using UnityEngine;
 
 public class PlayerAimController : MonoBehaviour
-{
+{    
     public float sensitivityX = 150f;
     public float sensitivityY = 1.5f;
-    public float minY = -60f;
-    public float maxY = 70f;
+    public float minPitch = -60f;
+    public float maxPitch = 70f;
 
-    private float rotationX; // 위/아래
-    private float rotationY; // 좌/우
-    private PlayerInputReader input;
-
-    void Awake()
-    {
-        input = GetComponentInParent<PlayerInputReader>();
-    }
+    private float pitch = 0f; // X축 상하 회전용
+    public PlayerInputReader input;
 
     void Update()
     {
-        rotationY += input.MouseX * sensitivityX * Time.deltaTime;
-        rotationX -= Input.GetAxis("Mouse Y") * sensitivityY;
-        rotationX = Mathf.Clamp(rotationX, minY, maxY);
+        float mouseX = input.MouseX * sensitivityX * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivityY;
 
-        transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+        // Y축: 좌우 회전 (상대 회전으로 처리)
+        transform.Rotate(Vector3.up, mouseX, Space.World);
+
+        // X축: 상하 회전 (Pitch만 Clamp로 유지)
+        pitch -= mouseY;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+        Vector3 currentEuler = transform.localEulerAngles;
+        currentEuler.x = pitch;
+        transform.localEulerAngles = currentEuler;
     }
 }
