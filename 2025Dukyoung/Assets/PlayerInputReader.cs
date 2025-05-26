@@ -11,7 +11,9 @@ public class PlayerInputReader : MonoBehaviour
     public Vector2 MoveInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool IsAiming => Input.GetMouseButton(1);
-    public bool IsFiring => Input.GetButton("Fire1");
+    private bool isFiring;
+
+    public bool IsFiring => isFiring;
 
     public float MouseX { get; private set; }
     public float MouseY { get; private set; }
@@ -23,6 +25,8 @@ public class PlayerInputReader : MonoBehaviour
 
         MouseX = Input.GetAxis("Mouse X");
         MouseY = Input.GetAxis("Mouse Y");
+        isFiring = Input.GetButton("Fire1");
+        Debug.Log(IsFiring);
     }
 
     /*
