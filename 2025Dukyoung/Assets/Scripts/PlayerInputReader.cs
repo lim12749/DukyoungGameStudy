@@ -1,7 +1,5 @@
 using UnityEngine;
-
-
-
+using UnityEngine.Animations.Rigging;
 /// <summary>
 /// 레거시 Input 방식으로 키보드와 마우스 입력을 저장하는 클래스입니다.
 /// TPS용 기본 입력값 (이동, 점프, 마우스 회전)을 제공합니다.
@@ -17,7 +15,8 @@ public class PlayerInputReader : MonoBehaviour
 
     public float MouseX { get; private set; }
     public float MouseY { get; private set; }
-
+    public Rig aimLayer;
+    float aimDuration = 0.3f;
     void Update()
     {
         MoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -26,6 +25,15 @@ public class PlayerInputReader : MonoBehaviour
         MouseX = Input.GetAxis("Mouse X");
         MouseY = Input.GetAxis("Mouse Y");
         isFiring = Input.GetButton("Fire1");
+
+        if (Input.GetMouseButton(1))
+        {
+            aimLayer.weight += Time.deltaTime / aimDuration;
+        }
+        else
+        {
+            aimLayer.weight -= Time.deltaTime / aimDuration;
+        }
     }
 
     /*
