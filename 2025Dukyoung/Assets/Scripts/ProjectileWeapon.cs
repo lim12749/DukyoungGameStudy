@@ -8,9 +8,34 @@ public class ProjectileWeapon : WeaponBase
     public Transform firePoint; //발사 위치
     public float bulletSpeed = 1f; //총알 속도
     public Camera mainCamera; // 메인카메라 연ㅕ
+    public LineRenderer aimLine;
+    public PlayerInputReader input;
 
-    public AudioSource audioSource;
-    public AudioClip audioClip;
+    public Transform aimTarget;
+    //public AudioSource audioSource;
+    //public AudioClip audioClip;
+    void Awake()
+    {
+        aimLine.enabled = false;
+    }
+        void Update()
+    {
+        if (input != null && aimLine != null && firePoint != null && aimTarget != null)
+        {
+            if (input.IsAiming)
+            {
+                Debug.Log("참");
+                aimLine.enabled = true;
+                aimLine.SetPosition(0, firePoint.position);  // 총구
+                aimLine.SetPosition(1, aimTarget.position);  // 에임 타겟
+            }
+            else
+            {
+                aimLine.enabled = false;
+            }
+        }
+    }
+
     public override void Fire()
     {
         if (bulletPrefab == null || firePoint == null)
@@ -36,7 +61,7 @@ public class ProjectileWeapon : WeaponBase
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(shootDir));
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
-        audioSource.PlayOneShot(audioClip);
+        //audioSource.PlayOneShot(audioClip);
         if (rb != null)
         {
             rb.AddForce(shootDir * bulletSpeed, ForceMode.Impulse); // 💥 AddForce 방식

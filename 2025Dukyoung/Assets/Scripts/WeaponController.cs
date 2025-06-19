@@ -7,10 +7,11 @@ public class WeaponController : MonoBehaviour
 
     void Update()
     {
-        if (input.IsFiring && currentWeapon != null && currentWeapon.CanFire())
+        if (input.IsFiring && currentWeapon != null && currentWeapon.CanFire() && input.IsAiming)
         {
             Debug.Log("무기 발사 시도");
             currentWeapon.Fire();
         }
+        
     }
 }
