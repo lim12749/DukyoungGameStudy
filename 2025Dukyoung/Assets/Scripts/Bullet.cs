@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float lifeTime = 3f; //시간되면 삭제
-    public float damage = 10f;
+    public int damage = 10;
     void Start()
     {
         Destroy(gameObject, lifeTime); //3초 뒤에 삭제
@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         //최신 TryGet으로 out으로 매개변수로 전달
-        if (other.collider.TryGetComponent<Monster>(out var monster))
+        if (other.collider.TryGetComponent<BaseEnemy>(out var monster))
         {
             monster.TakeDamage(damage);
         }
