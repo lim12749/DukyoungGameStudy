@@ -26,7 +26,7 @@ public class PlayerAnimationController : MonoBehaviour
     /// <param name="isJumping">점프 중인지 여부</param>
     public void SetJumping(bool isJumping)
     {
-        Debug.Log(isJumping);
+        //Debug.Log(isJumping);
         animator.SetBool("isJumping", isJumping);
 
     }
