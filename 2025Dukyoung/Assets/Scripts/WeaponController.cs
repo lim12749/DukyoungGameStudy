@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class WeaponController : MonoBehaviour
 {
@@ -29,7 +29,7 @@ public class WeaponController : MonoBehaviour
         // 마우스 커서를 잠그고 보이지 않게 합니다.
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Debug.Log("마우스 커서 잠김 및 숨김.");
+        //Debug.Log("마우스 커서 잠김 및 숨김.");
     }
 
     void UnlockCursor()
@@ -37,6 +37,6 @@ public class WeaponController : MonoBehaviour
         // 마우스 커서를 풀고 보이게 합니다.
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Debug.Log("마우스 커서 잠금 해제 및 표시.");
+        //Debug.Log("마우스 커서 잠금 해제 및 표시.");
     }
 }

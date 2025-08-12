@@ -12,8 +12,8 @@ public class ProjectileWeapon : WeaponBase
     public PlayerInputReader input;
 
     public Transform aimTarget;
-    //public AudioSource audioSource;
-    //public AudioClip audioClip;
+    public AudioSource audioSource;
+    public AudioClip fireClip;
     void Awake()
     {
         aimLine.enabled = false;
@@ -24,7 +24,7 @@ public class ProjectileWeapon : WeaponBase
         {
             if (input.IsAiming)
             {
-                Debug.Log("참");
+               //Debug.Log("참");
                 aimLine.enabled = true;
                 aimLine.SetPosition(0, firePoint.position);  // 총구
                 aimLine.SetPosition(1, aimTarget.position);  // 에임 타겟
@@ -43,6 +43,12 @@ public class ProjectileWeapon : WeaponBase
             Debug.LogWarning("BulletPrefab 또는 FirePoint가 설정되지 않았습니다.");
             return;
         }
+            // 사운드 먼저 재생
+        if (fireClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(fireClip);
+        }
+
         // 🔸 1. 화면 중앙에서 레이 쏘기
         Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
@@ -51,7 +57,7 @@ public class ProjectileWeapon : WeaponBase
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             targetPoint = hit.point;
-            Debug.Log("레이 충돌: " + hit.collider.name);
+            //Debug.Log("레이 충돌: " + hit.collider.name);
         }
 
         // 🔸 3. 발사 방향 계산
