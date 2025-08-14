@@ -27,7 +27,7 @@ public class PlayerInputReader : MonoBehaviour
         MouseY = Input.GetAxis("Mouse Y");
         isFiring = Input.GetButton("Fire1");
         isAiming = Input.GetMouseButton(1);
-
+        /*
         if (Input.GetMouseButton(1))
         {
             aimLayer.weight += Time.deltaTime / aimDuration;
@@ -35,7 +35,8 @@ public class PlayerInputReader : MonoBehaviour
         else
         {
             aimLayer.weight -= Time.deltaTime / aimDuration;
-        }
+        }*/
+        aimLayer.weight = 1.0f; // Aim 레이어의 가중치를 1로 설정하여 항상 활성화 상태로 유지합니다.
     }
 
     /*

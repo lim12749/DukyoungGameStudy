@@ -12,6 +12,8 @@ public class ProjectileWeapon : WeaponBase
     public PlayerInputReader input;
 
     public Transform aimTarget;
+
+    public AnimationClip weponAnimationClip; // 무기 애니메이션 클립 
     public AudioSource audioSource;
     public AudioClip fireClip;
     void Awake()
