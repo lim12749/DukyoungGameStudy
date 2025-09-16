@@ -46,15 +46,15 @@ public class ExpOrb : MonoBehaviour
             Absorb();
         }
     }
-
+    
     private void Absorb()
     {
         // 인터페이스 기반으로 경험치 부여
-        ILevelable levelable = target.GetComponent<ILevelable>();
-        if (levelable != null)
-        {
-            levelable.GainExp(expAmount);
-        }
+        //ILevelable levelable = target.GetComponent<ILevelable>();
+       //if (levelable != null)
+      //  {
+       //     levelable.GainExp(expAmount);
+      //  }
 
         // TODO: 사운드/파티클 추가 가능
 

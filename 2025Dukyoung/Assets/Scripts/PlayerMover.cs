@@ -57,8 +57,8 @@ public class PlayerMover : MonoBehaviour
 
         //애니메이션 연결
         float flatSpeed = new Vector3(moveDir.x, 0f, moveDir.z).magnitude;
-        animationController.UpdateMoveAnimation(flatSpeed);
-                      animationController.SetJumping(isJumping);
+        //animationController.UpdateMoveAnimation(flatSpeed);
+          //            animationController.SetJumping(isJumping);
 
     }
 

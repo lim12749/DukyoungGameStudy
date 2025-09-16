@@ -2,6 +2,7 @@ using UnityEngine;
 
 //발사체가 있는 무기 클래스
 //부모 상속
+//RayCastWeapon.cs와 유사한 기능을 수행
 public class ProjectileWeapon : WeaponBase
 {
     public GameObject bulletPrefab; //총알 프리펩
@@ -20,13 +21,13 @@ public class ProjectileWeapon : WeaponBase
     {
         aimLine.enabled = false;
     }
-        void Update()
+    void Update()
     {
         if (input != null && aimLine != null && firePoint != null && aimTarget != null)
         {
             if (input.IsAiming)
             {
-               //Debug.Log("참");
+                //Debug.Log("참");
                 aimLine.enabled = true;
                 aimLine.SetPosition(0, firePoint.position);  // 총구
                 aimLine.SetPosition(1, aimTarget.position);  // 에임 타겟
@@ -45,7 +46,7 @@ public class ProjectileWeapon : WeaponBase
             Debug.LogWarning("BulletPrefab 또는 FirePoint가 설정되지 않았습니다.");
             return;
         }
-            // 사운드 먼저 재생
+        // 사운드 먼저 재생
         if (fireClip != null && audioSource != null)
         {
             audioSource.PlayOneShot(fireClip);

@@ -1,33 +1,50 @@
+// PlayerAnimationController.cs
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    public Animator animator;
+    [SerializeField] Animator animator;
+    [SerializeField] InputReader input;
+    [SerializeField] PlayerLocomotion locomotion;
 
-    private readonly int SpeedHash = Animator.StringToHash("Speed");
-    //private readonly int IsJumpingHash = Animator.StringToHash("isJumping");
+    [Header("Params/Layers")]
+    string hasWeaponParam = "HasWeapon";
+    string isAimingParam  = "IsAiming";
+    string upperBodyAimLayer = "UpperBody_Aim";
+    [SerializeField] float  aimTransitionSpeed = 8f;
+
+    int upperLayerIndex = -1;
+    float aimWeight;
 
     void Awake()
     {
-       // animator = GetComponent<Animator>();
-    }
-        /// <summary>
-    /// 이동 속도 값을 기반으로 애니메이션 Blend를 조절합니다.
-    /// </summary>
-    /// <param name="speed">현재 이동 속도 (0 ~ 1)</param>
-    public void UpdateMoveAnimation(float speed)
-    {
-        animator.SetFloat(SpeedHash, speed);
+        if (!animator) animator = GetComponentInChildren<Animator>(true);
+        if (animator) {
+            upperLayerIndex = animator.GetLayerIndex(upperBodyAimLayer);
+            if (upperLayerIndex >= 0) animator.SetLayerWeight(upperLayerIndex, 0f);
+        }
     }
 
-    /// <summary>
-    /// 점프 애니메이션 여부를 설정합니다.
-    /// </summary>
-    /// <param name="isJumping">점프 중인지 여부</param>
-    public void SetJumping(bool isJumping)
+    void Update()
     {
-        //Debug.Log(isJumping);
-        animator.SetBool("isJumping", isJumping);
+        if (!animator || input == null || locomotion == null) return;
 
+        // 1) HasWeapon을 문자열로 바로 세팅 (가장 단순)
+        animator.SetBool(hasWeaponParam, locomotion.HasWeapon);
+
+        // 2) IsAiming도 문자열로 바로 세팅 (무기 있을 때만)
+        bool aimingActive = input.AimHeld && locomotion.HasWeapon;
+        animator.SetBool(isAimingParam, aimingActive);
+
+        // 3) 상체 레이어 가중치
+        if (upperLayerIndex >= 0)
+        {
+            float target = aimingActive ? 1f : 0f;
+            aimWeight = Mathf.MoveTowards(aimWeight, target, aimTransitionSpeed * Time.deltaTime);
+            animator.SetLayerWeight(upperLayerIndex, aimWeight);
+        }
+
+        // (선택) 이동 블렌드 값도 여기서 세팅한다면:
+        animator.SetFloat("Speed01", locomotion.Speed01);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
-public abstract class BaseEnemy : MonoBehaviour , IDamageable
+public abstract class BaseEnemy : MonoBehaviour 
 {
     [Header("순찰")]
     public Transform[] patrolPoints; // 🟠 순찰 지점 배열

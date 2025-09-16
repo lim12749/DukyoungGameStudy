@@ -17,7 +17,8 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject, lifeTime); //3초 뒤에 삭제
     }
-    void OnCollisionEnter(Collision other)
+    /*
+        void OnCollisionEnter(Collision other)
     {
         if (other.collider.TryGetComponent<IDamageable>(out var target))
         {
@@ -40,5 +41,5 @@ public class Bullet : MonoBehaviour
             AudioSource.PlayClipAtPoint(ricochetClip, transform.position);
         }
         Destroy(gameObject);
-    }
+    }*/
 }
