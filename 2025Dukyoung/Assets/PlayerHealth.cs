@@ -1,17 +1,16 @@
-// MonsterHealth.cs
+// PlayerHealth.cs
 using UnityEngine;
 using System;
 
 [DisallowMultipleComponent]
-public class MonsterHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float maxHP = 50f;
-    [SerializeField] GameObject deathFx; // 선택: 죽을 때 이펙트
+    [SerializeField] float maxHP = 100f;
     public float Current { get; private set; }
     public bool IsDead => Current <= 0f;
 
+    public event Action<float, float> OnChanged;
     public event Action OnDeath;
-    public event Action<float, float> OnChanged; // (현재, 최대)
 
     void Awake() => Current = maxHP;
 
@@ -20,12 +19,11 @@ public class MonsterHealth : MonoBehaviour
         if (IsDead) return;
         Current -= dmg;
         OnChanged?.Invoke(Current, maxHP);
-
         if (Current <= 0f)
         {
             OnDeath?.Invoke();
-            if (deathFx) Instantiate(deathFx, transform.position, transform.rotation);
-            Destroy(gameObject);
+            Debug.Log("Player Died");
+            // TODO: 리스폰/게임오버 처리
         }
     }
 }
