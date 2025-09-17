@@ -46,7 +46,7 @@ public class WeaponHandler : MonoBehaviour
         // 다시 주워지지 않게
         if (weaponGO.TryGetComponent<WeaponPickup>(out var pickup)) pickup.enabled = false;
         
-            // ★ 여기 추가: AimPivot / Muzzle 찾아 바인딩
+        // ★ 여기 추가: AimPivot / Muzzle 찾아 바인딩
         Transform weaponRoot = weaponGO.transform;
         Transform muzzle     = weaponRoot.Find("Muzzle");           // 있으면
         aimAligner?.BindWeapon(weaponRoot, muzzle);                 // ← 한 줄

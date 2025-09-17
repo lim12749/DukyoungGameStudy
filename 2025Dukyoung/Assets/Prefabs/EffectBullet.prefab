@@ -62,8 +62,8 @@ GameObject:
   - component: {fileID: 9180686655430769474}
   - component: {fileID: 4769687810924714627}
   - component: {fileID: -4374835863988834325}
-  - component: {fileID: -1600566555244022612}
   - component: {fileID: 4086175515500088391}
+  - component: {fileID: 5582178727466473155}
   m_Layer: 0
   m_Name: EffectBullet
   m_TagString: Untagged
@@ -192,22 +192,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1600566555244022612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1204321746558170306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 109786b43f2f9471da9e520b1cce8549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeTime: 3
-  damage: 10
-  ricochetClip: {fileID: 8300000, guid: e8210ab1fe6784e7eb15956b135716c9, type: 3}
-  impactEffectPrefab: {fileID: 100002, guid: f04e15e9b0b32f24b9e87868e8bfbeea, type: 3}
 --- !u!82 &4086175515500088391
 AudioSource:
   m_ObjectHideFlags: 0
@@ -305,6 +289,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5582178727466473155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204321746558170306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f31c15e3d9f143cdbc79551359e74e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3596173745494794613
 GameObject:
   m_ObjectHideFlags: 0
