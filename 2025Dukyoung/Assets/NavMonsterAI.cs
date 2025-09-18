@@ -1,6 +1,7 @@
 // NavMonsterAI.cs
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class NavMonsterAI : MonoBehaviour
@@ -32,16 +33,25 @@ public class NavMonsterAI : MonoBehaviour
         if (!target)
         {
             var t = GameObject.FindWithTag("Player");
-            if (t) target = t.transform;
+                target = t.transform;
         }
-        if (!targetHealth && target) targetHealth = target.GetComponentInParent<PlayerHealth>();
-        if (!animator) animator = GetComponentInChildren<Animator>(true);
+        
+        if (!targetHealth && target)
+            targetHealth = target.GetComponentInParent<PlayerHealth>();
+        if (!animator)
+            animator = GetComponentInChildren<Animator>();
 
         agent.stoppingDistance = attackRange - 0.1f;
         agent.updateRotation = true;
         agent.speed = chaseSpeed;
+        TryAutoBind(); // ★ 추가
     }
 
+    void OnEnable()
+    {
+        // 생성 프레임 순서 문제 대비(플레이어가 늦게 뜨는 케이스)
+        if (!target || !targetHealth) StartCoroutine(LateBind());
+    }
     void Update()
     {
         if (myHealth && myHealth.IsDead) { agent.isStopped = true; return; }
@@ -78,7 +88,26 @@ public class NavMonsterAI : MonoBehaviour
             if (agent.hasPath) agent.ResetPath();
         }
     }
-
+    IEnumerator LateBind()
+    {
+        yield return null; // 한 프레임 대기
+        TryAutoBind();
+    }
+    void TryAutoBind()
+    {
+        if (!target)
+        {
+            var p = GameObject.FindWithTag("Player");
+            if (p) target = p.transform;
+        }
+        if (!targetHealth && target)
+            targetHealth = target.GetComponentInParent<PlayerHealth>();
+    }
+     public void InjectTarget(Transform t, PlayerHealth h)
+    {
+        target = t;
+        targetHealth = h;
+    }
     void TryAttack()
     {
         if (cooldown > 0f) return;
@@ -87,7 +116,6 @@ public class NavMonsterAI : MonoBehaviour
         //if (animator) animator.SetTrigger("Attack");
         if (targetHealth && !targetHealth.IsDead)
         {
-            Debug.Log("[NavMonsterAI] Player Hit! -" + contactDamage);
             targetHealth.TakeDamage(contactDamage);
         }
     }
