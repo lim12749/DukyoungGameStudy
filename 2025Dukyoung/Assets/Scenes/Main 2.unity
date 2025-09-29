@@ -1911,14 +1911,14 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1229007396}
         m_TargetAssemblyTypeName: VolumeUI, Assembly-CSharp
-        m_MethodName: OnMasterChanged
-        m_Mode: 4
+        m_MethodName: OnBGMChanged
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1976,14 +1976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce87db5a9f6b34dc88c1be526ac265cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterSlider: {fileID: 1220886727}
-  bgmSlider: {fileID: 0}
-  sfxSlider: {fileID: 0}
-  enemySlider: {fileID: 0}
-  masterLabel: {fileID: 0}
+  bgmSlider: {fileID: 1220886727}
   bgmLabel: {fileID: 0}
-  sfxLabel: {fileID: 0}
-  enemyLabel: {fileID: 0}
   showPercent: 1
 --- !u!1 &1242283299
 GameObject:
@@ -2871,7 +2865,8 @@ AudioSource:
   m_GameObject: {fileID: 1604171745}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3239918080466729453, guid: 464632dcb1f4845f7947ec9db8c7aba5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 2cebe5ef59f447d4d803665e3ecf1a2f, type: 3}
   m_Resource: {fileID: 8300000, guid: 2cebe5ef59f447d4d803665e3ecf1a2f, type: 3}
   m_PlayOnAwake: 1
