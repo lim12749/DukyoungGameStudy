@@ -6,39 +6,33 @@ using System.Collections.Generic;
 
 public class LevelUpPanelController : MonoBehaviour
 {
-    // 카드 종류
+    // Card types
     enum CardKind { Stat, BasicAttackUpgrade, PassiveOrbitAdd, PassiveOrbitUpgrade }
 
-    // 적용 대상
     [Header("Attack Targets")]
-    [SerializeField] private PlayerController player;   // 기본공격 업그레이드 적용 대상
-    [SerializeField] private OrbitalsManager orbitals;  // 오비탈 관리 대상
+    [SerializeField] private PlayerController player;   // receiver for basic-attack upgrades
+    [SerializeField] private OrbitalsManager orbitals;  // receiver for orbital passives
 
-    // 카드 믹스 비율
     [Header("Card Mix")]
-    [Range(0,100)] public int attackUpgradeChance = 30; // 각 슬롯이 공격류 카드가 될 확률(%)
+    [Range(0,100)] public int attackUpgradeChance = 30; // % chance each slot becomes an "attack-related" card
 
-    // 패널 & 스탯
     [Header("Panel")]
-    [SerializeField] private GameObject panel; // 비활성 시작
+    [SerializeField] private GameObject panel; 
     [Header("Target Stats")]
     [SerializeField] private PlayerStats stats;
 
-    // 카드 UI 3개
     [System.Serializable] struct CardUI
     {
         public Button button;
         public TMP_Text title;
         public TMP_Text desc;
         public TMP_Text rarityText;
-        // (원하면 Image bg 추가해서 등급색 입히기 가능)
     }
     [Header("Card UIs")]
     [SerializeField] private CardUI card1;
     [SerializeField] private CardUI card2;
     [SerializeField] private CardUI card3;
 
-    // 등급 확률
     [Header("Rarity Weights (%)")]
     [Range(0,100)] public int wNormal = 60;
     [Range(0,100)] public int wRare = 25;
@@ -48,16 +42,15 @@ public class LevelUpPanelController : MonoBehaviour
     readonly List<NavMeshAgent> frozenAgents = new List<NavMeshAgent>();
     bool open;
 
-    // 카드 데이터
     struct CardData
     {
         public CardKind kind;
         public StatType stat; public Rarity rarity; public string title; public string desc; public int tierValue;
-        // 기본공격 업글
+        // Basic-attack upgrades
         public int   multiShotAdd;
         public float projSpeedAdd;
         public float spreadAdd;
-        // 오비탈 업글
+        // Orbital upgrades
         public int   orbitAddCount;
         public float orbitRadiusAdd;
         public float orbitSpeedAdd;
@@ -133,7 +126,7 @@ public class LevelUpPanelController : MonoBehaviour
     }
 
     // =========================
-    // ==== 카드 생성 로직 ====
+    // ==== Card generation ====
     // =========================
     void Generate3Cards(out CardData a, out CardData b, out CardData c)
     {
@@ -148,15 +141,13 @@ public class LevelUpPanelController : MonoBehaviour
 
         if (pickAttack)
         {
-            // 공격류 카드 중 택1
             int r = Random.Range(0, 3);
-            if (r == 0) return MakeBasicAttackUpgradeCard(); // 멀티샷/속도/퍼짐
-            if (r == 1) return MakeOrbitAddCard();           // 오비탈 추가
-            return MakeOrbitUpgradeCard();                   // 오비탈 강화
+            if (r == 0) return MakeBasicAttackUpgradeCard();
+            if (r == 1) return MakeOrbitAddCard();
+            return MakeOrbitUpgradeCard();
         }
         else
         {
-            // 스탯 카드
             StatType[] pool = {
                 StatType.AttackDamage, StatType.AttackSpeed, StatType.MoveSpeed,
                 StatType.CritChance, StatType.CooldownReduction, StatType.Armor
@@ -168,48 +159,48 @@ public class LevelUpPanelController : MonoBehaviour
 
     CardData MakeStatCard(StatType s)
     {
-        var r = RollRarity();
+        var r  = RollRarity();
         int tv = UpgradeDefs.TierValue(r);
-        string title = $"{UpgradeDefs.StatDisplay(s)} +{tv}티어";
-        string desc  = BuildDesc(s, tv);
+        string title = $"{StatDisplayEN(s)} +Tier {tv}";
+        string desc  = BuildDescEN(s, tv);
         return new CardData { kind = CardKind.Stat, stat = s, rarity = r, title = title, desc = desc, tierValue = tv };
     }
 
-    // 기본공격 업그레이드 카드(등급에 따라 수치 튜닝)
+    // Basic-attack upgrade card
     CardData MakeBasicAttackUpgradeCard()
     {
         var r  = RollRarity();
-        int tv = UpgradeDefs.TierValue(r); // 2~6
-        int   addCount = Mathf.Max(1, tv / 2); // 2→+1, 3→+1, 4→+2, 6→+3
-        float speedAdd = 1.0f * (tv - 1);      // 투사체 속도 보너스
-        float spread   = 2.0f;                 // 퍼짐 소폭 증가
+        int tv = UpgradeDefs.TierValue(r);      // 2..6
+        int   addCount = Mathf.Max(1, tv / 2);  // 2→+1, 3→+1, 4→+2, 6→+3
+        float speedAdd = 1.0f * (tv - 1);
+        float spread   = 2.0f;
 
         return new CardData {
             kind = CardKind.BasicAttackUpgrade, rarity = r,
-            title = $"기본공격 업그레이드 ({r})",
-            desc  = $"멀티샷 +{addCount}, 투사체 속도 +{speedAdd}, 퍼짐 +{spread}°",
+            title = $"Basic Attack Upgrade ({r})",
+            desc  = $"Multishot +{addCount}, Projectile Speed +{speedAdd}, Spread +{spread}°",
             multiShotAdd = addCount,
             projSpeedAdd = speedAdd,
             spreadAdd    = spread
         };
     }
 
-    // 오비탈 추가 카드
+    // Orbital add card
     CardData MakeOrbitAddCard()
     {
         var r  = RollRarity();
         int tv = UpgradeDefs.TierValue(r);
-        int add = (tv >= 5) ? 2 : 1; // 높은 등급일수록 2개 추가
+        int add = (tv >= 5) ? 2 : 1;
 
         return new CardData {
             kind = CardKind.PassiveOrbitAdd, rarity = r,
-            title = $"오비탈 추가 ({r})",
-            desc  = (add == 2) ? "오비탈 2개 추가(반대 위치 생성)" : "오비탈 1개 추가",
+            title = $"Add Orbital ({r})",
+            desc  = (add == 2) ? "Add 2 orbitals (spawned opposite)" : "Add 1 orbital",
             orbitAddCount = add
         };
     }
 
-    // 오비탈 강화 카드(반경/속도)
+    // Orbital upgrade card
     CardData MakeOrbitUpgradeCard()
     {
         var r  = RollRarity();
@@ -219,8 +210,8 @@ public class LevelUpPanelController : MonoBehaviour
 
         return new CardData {
             kind = CardKind.PassiveOrbitUpgrade, rarity = r,
-            title = $"오비탈 강화 ({r})",
-            desc  = $"반경 +{radAdd:F2}, 회전속도 +{spdAdd:F0}°/s",
+            title = $"Upgrade Orbitals ({r})",
+            desc  = $"Radius +{radAdd:F2}, Angular Speed +{spdAdd:F0}°/s",
             orbitRadiusAdd = radAdd,
             orbitSpeedAdd  = spdAdd
         };
@@ -236,23 +227,38 @@ public class LevelUpPanelController : MonoBehaviour
         return Rarity.Legendary;
     }
 
-    // 스탯 카드 설명 포맷
-    string BuildDesc(StatType s, int tv)
+    // English stat display names
+    string StatDisplayEN(StatType s)
     {
         switch (s)
         {
-            case StatType.AttackDamage:      return $"attack +{2f*tv:F0}";
-            case StatType.AttackSpeed:       return $"attack Speed +{0.10f*tv:F2}/s";
-            case StatType.MoveSpeed:         return $"MoveSpeed +{0.25f*tv:F2}";
-            case StatType.CritChance:        return $"Crital +{(2f*tv):F0}%";
-            case StatType.CooldownReduction: return $"CoolTime - +{(2f*tv):F0}%";
-            case StatType.Armor:             return $"Defence +{1f*tv:F0}";
+            case StatType.AttackDamage:      return "Attack Damage";
+            case StatType.AttackSpeed:       return "Attack Speed";
+            case StatType.MoveSpeed:         return "Move Speed";
+            case StatType.CritChance:        return "Crit Chance";
+            case StatType.CooldownReduction: return "Cooldown Reduction";
+            case StatType.Armor:             return "Armor";
+        }
+        return s.ToString();
+    }
+
+    // English descriptions
+    string BuildDescEN(StatType s, int tv)
+    {
+        switch (s)
+        {
+            case StatType.AttackDamage:      return $"+{2f*tv:F0} Attack Damage";
+            case StatType.AttackSpeed:       return $"+{0.10f*tv:F2}/s Attack Speed";
+            case StatType.MoveSpeed:         return $"+{0.25f*tv:F2} Move Speed";
+            case StatType.CritChance:        return $"+{(2f*tv):F0}% Crit Chance";
+            case StatType.CooldownReduction: return $"+{(2f*tv):F0}% Cooldown Reduction";
+            case StatType.Armor:             return $"+{1f*tv:F0} Armor";
         }
         return "";
     }
 
     // =========================
-    // ==== 바인딩 & 적용 ====
+    // ==== Bind & Apply =======
     // =========================
     void BindCard(CardUI ui, CardData cd)
     {
@@ -262,7 +268,7 @@ public class LevelUpPanelController : MonoBehaviour
         if (ui.button)
         {
             ui.button.onClick.RemoveAllListeners();
-            var captured = cd; // 캡처 안전
+            var captured = cd;
             ui.button.onClick.AddListener(() => ApplyCardAndClose(captured));
         }
     }
