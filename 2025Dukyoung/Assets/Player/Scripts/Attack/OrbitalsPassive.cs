@@ -133,7 +133,7 @@ void TryHitEnemiesAt(Vector3 pos)
                 lastHit.Remove(_tmpKeys[k]);
         }
     }
-
+    //데미지 계산
     float CalcDamage()
     {
         float d = baseDamage + dmgPerLevel * (level - 1);
