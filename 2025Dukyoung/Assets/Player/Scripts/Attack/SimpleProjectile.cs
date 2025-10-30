@@ -4,19 +4,29 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class SimpleProjectile : MonoBehaviour
 {
+    [Header("Motion")]
     public float speed = 20f;
     public float maxLifetime = 3f;
-    public LayerMask hitMask;   // 적 레이어만 넣어두면 필터링 쉬움
+
+    [Header("Hit Filter")]
+    public LayerMask hitMask;          // 적 레이어만 넣어두면 필터링 쉬움
+
+    [Header("Damage")]
     public float damage = 10f;
+    public bool  isCrit = false;       // ← 크리티컬 여부(발사 시 세팅)
 
     float life;
     Vector3 dir;
     Rigidbody rb;
     Collider col;
 
-    public void Init(float dmg, Vector3 direction)
+    /// <summary>
+    /// 발사 초기화. crit=true면 크리티컬 텍스트(빨간색)로 표시됨.
+    /// </summary>
+    public void Init(float dmg, Vector3 direction, bool crit = false)
     {
         damage = dmg;
+        isCrit = crit;
         dir = direction.normalized;
     }
 
@@ -41,7 +51,11 @@ public class SimpleProjectile : MonoBehaviour
     void Update()
     {
         life += Time.deltaTime;
-        if (life >= maxLifetime) { Destroy(gameObject); return; }
+        if (life >= maxLifetime)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         transform.position += dir * speed * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
@@ -52,9 +66,18 @@ public class SimpleProjectile : MonoBehaviour
         // 레이어 필터
         if ((hitMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-        var d = other.GetComponentInParent<IDamageable>();
-        if (d != null) d.TakeDamage(damage);
+        // 데미지 적용
+        var dmgTarget = other.GetComponentInParent<IDamageable>();
+        if (dmgTarget != null)
+        {
+            dmgTarget.TakeDamage(damage);
 
-        Destroy(gameObject); // 관통 X: 첫 히트에서 파괴
+            // 데미지 텍스트 스폰 (충돌 지점 근처로 살짝 위)
+            Vector3 contact = other.ClosestPoint(transform.position);
+            DamageTextSpawner.Instance?.Spawn(contact + Vector3.up * 0.8f, damage, isCrit);
+        }
+
+        // 관통 X: 첫 히트에서 파괴
+        Destroy(gameObject);
     }
 }

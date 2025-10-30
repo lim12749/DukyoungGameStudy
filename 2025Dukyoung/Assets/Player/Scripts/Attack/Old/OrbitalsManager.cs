@@ -12,7 +12,7 @@ public class OrbitalsManager : MonoBehaviour
     public float radius = 2.0f;
     public float angularSpeed = 180f; // 도/초
 
-    readonly List<OrbitalBlade> blades = new List<OrbitalBlade>();
+    readonly List<OrbitalsPassive> blades = new List<OrbitalsPassive>();
 
     void LateUpdate()
     {
@@ -20,7 +20,7 @@ public class OrbitalsManager : MonoBehaviour
         foreach (var b in blades)
         {
             if (!b) continue;
-            b.center = transform;
+            //b.center = transform;
             b.radius = radius;
             b.angularSpeed = angularSpeed;
         }
@@ -33,11 +33,11 @@ public class OrbitalsManager : MonoBehaviour
         while (blades.Count < targetCount)
         {
             var go = Instantiate(orbitalPrefab, transform.position, Quaternion.identity, transform);
-            var ob = go.GetComponent<OrbitalBlade>();
-            ob.center = transform;
+            var ob = go.GetComponent<OrbitalsPassive>();
+            //ob.center = transform;
             ob.radius = radius;
             ob.angularSpeed = angularSpeed;
-            ob.phase = (blades.Count / (float)targetCount) * 360f; // 균등 각도
+            //ob.phase = (blades.Count / (float)targetCount) * 360f; // 균등 각도
             blades.Add(ob);
         }
         // 제거

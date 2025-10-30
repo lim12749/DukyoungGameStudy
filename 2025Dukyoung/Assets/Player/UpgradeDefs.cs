@@ -1,9 +1,5 @@
 using UnityEngine;
 
-public enum StatType { AttackDamage, AttackSpeed, MoveSpeed, CritChance, MaxMana, CooldownReduction, Armor } // 스탯 종류
-
-public enum Rarity { Normal, Rare, Epic, Legendary } // 등급
-
 public static class UpgradeDefs
 {
     // 등급별 “티어 값” — Normal=2, Legendary=6 (요구 사항)
@@ -41,7 +37,6 @@ public static class UpgradeDefs
             case StatType.AttackSpeed:       return "공격속도";
             case StatType.MoveSpeed:         return "이동속도";
             case StatType.CritChance:        return "치명타 확률";
-            case StatType.MaxMana:           return "최대 마나";
             case StatType.CooldownReduction: return "스킬 쿨타임 감소";
             case StatType.Armor:             return "방어력";
         }

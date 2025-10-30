@@ -6,63 +6,36 @@ using System.Collections.Generic;
 
 public class LevelUpPanelController : MonoBehaviour
 {
-    // Card types
-    enum CardKind { Stat, BasicAttackUpgrade, PassiveOrbitAdd, PassiveOrbitUpgrade }
-
-    [Header("Attack Targets")]
-    [SerializeField] private PlayerController player;   // receiver for basic-attack upgrades
-    [SerializeField] private OrbitalsManager orbitals;  // receiver for orbital passives
-
-    [Header("Card Mix")]
-    [Range(0,100)] public int attackUpgradeChance = 30; // % chance each slot becomes an "attack-related" card
+    [Header("Refs")]
+    public LevelUpCardGenerator generator;       // 위 3번 스크립트
+    public PassiveAttackManager passiveMgr;      // 플레이어에 붙은 매니저
+    public PlayerController     player;          // 기본공격 업그레이드 적용 대상
+    public PlayerStats          stats;
 
     [Header("Panel")]
-    [SerializeField] private GameObject panel; 
-    [Header("Target Stats")]
-    [SerializeField] private PlayerStats stats;
+    public GameObject panel;
 
-    [System.Serializable] struct CardUI
+    [System.Serializable] public struct CardUI
     {
-        public Button button;
+        public Button   button;
         public TMP_Text title;
         public TMP_Text desc;
         public TMP_Text rarityText;
     }
-    [Header("Card UIs")]
-    [SerializeField] private CardUI card1;
-    [SerializeField] private CardUI card2;
-    [SerializeField] private CardUI card3;
+    [Header("3 Card Slots")]
+    public CardUI card1, card2, card3;
 
-    [Header("Rarity Weights (%)")]
-    [Range(0,100)] public int wNormal = 60;
-    [Range(0,100)] public int wRare = 25;
-    [Range(0,100)] public int wEpic = 12;
-    [Range(0,100)] public int wLegendary = 3;
-
-    readonly List<NavMeshAgent> frozenAgents = new List<NavMeshAgent>();
+    readonly List<NavMeshAgent> frozenAgents = new();
     bool open;
-
-    struct CardData
-    {
-        public CardKind kind;
-        public StatType stat; public Rarity rarity; public string title; public string desc; public int tierValue;
-        // Basic-attack upgrades
-        public int   multiShotAdd;
-        public float projSpeedAdd;
-        public float spreadAdd;
-        // Orbital upgrades
-        public int   orbitAddCount;
-        public float orbitRadiusAdd;
-        public float orbitSpeedAdd;
-    }
-    CardData c1, c2, c3;
+    List<CardData> curCards;
 
     void Awake()
     {
         if (!panel) panel = gameObject;
-        if (!stats) stats = FindFirstObjectByType<PlayerStats>();
-        if (!player) player = FindFirstObjectByType<PlayerController>();
-        if (!orbitals) orbitals = FindFirstObjectByType<OrbitalsManager>();
+        if (!generator)    generator   = FindFirstObjectByType<LevelUpCardGenerator>();
+        if (!passiveMgr)   passiveMgr  = FindFirstObjectByType<PassiveAttackManager>();
+        if (!player)       player      = FindFirstObjectByType<PlayerController>();
+        if (!stats)        stats       = FindFirstObjectByType<PlayerStats>();
         panel.SetActive(false);
     }
 
@@ -71,7 +44,6 @@ public class LevelUpPanelController : MonoBehaviour
         var xp = PlayerExperience.Instance ?? FindFirstObjectByType<PlayerExperience>();
         if (xp) { xp.onLevelUp.RemoveListener(OnLevelUp); xp.onLevelUp.AddListener(OnLevelUp); }
     }
-
     void OnDisable()
     {
         var xp = PlayerExperience.Instance;
@@ -83,208 +55,87 @@ public class LevelUpPanelController : MonoBehaviour
     public void Open()
     {
         if (open) return;
-        open = true;
-        panel.SetActive(true);
+        open = true; panel.SetActive(true);
 
-        Time.timeScale = 0f;
-        FreezeAgents(true);
+        Time.timeScale = 0f; FreezeAgents(true);
 
-        Generate3Cards(out c1, out c2, out c3);
-        BindCard(card1, c1);
-        BindCard(card2, c2);
-        BindCard(card3, c3);
+        curCards = generator.Generate3();
+        BindCard(card1, curCards[0], 0);
+        BindCard(card2, curCards[1], 1);
+        BindCard(card3, curCards[2], 2);
     }
 
     public void Close()
     {
         if (!open) return;
-        open = false;
-        panel.SetActive(false);
+        open = false; panel.SetActive(false);
 
-        FreezeAgents(false);
-        Time.timeScale = 1f;
+        FreezeAgents(false); Time.timeScale = 1f;
     }
 
     void FreezeAgents(bool freeze)
     {
-        if (freeze)
+    if (freeze)
+    {
+        frozenAgents.Clear();
+        var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
+
+        foreach (var a in agents)
         {
-            frozenAgents.Clear();
-            var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
-            foreach (var a in agents)
-            {
-                if (!a) continue;
-                if (!a.isStopped) frozenAgents.Add(a);
-                a.isStopped = true;
-            }
-        }
-        else
-        {
-            foreach (var a in frozenAgents) if (a) a.isStopped = false;
-            frozenAgents.Clear();
+            if (!IsUsableAgent(a)) continue;           // 안전가드
+
+            // 이미 멈춰있지 않은 애만 기록하고 멈춘다
+            if (!a.isStopped) frozenAgents.Add(a);
+            a.isStopped = true;
         }
     }
-
-    // =========================
-    // ==== Card generation ====
-    // =========================
-    void Generate3Cards(out CardData a, out CardData b, out CardData c)
+    else
     {
-        a = MakeRandomCard();
-        b = MakeRandomCard();
-        c = MakeRandomCard();
-    }
-
-    CardData MakeRandomCard()
-    {
-        bool pickAttack = (Random.Range(0, 100) < attackUpgradeChance);
-
-        if (pickAttack)
+        // 저장해둔 애들만 원복, 중간에 파괴/비활성 되었을 수 있으므로 재검사
+        foreach (var a in frozenAgents)
         {
-            int r = Random.Range(0, 3);
-            if (r == 0) return MakeBasicAttackUpgradeCard();
-            if (r == 1) return MakeOrbitAddCard();
-            return MakeOrbitUpgradeCard();
+            if (!IsUsableAgent(a)) continue;
+            a.isStopped = false;
         }
-        else
-        {
-            StatType[] pool = {
-                StatType.AttackDamage, StatType.AttackSpeed, StatType.MoveSpeed,
-                StatType.CritChance, StatType.CooldownReduction, StatType.Armor
-            };
-            var s = pool[Random.Range(0, pool.Length)];
-            return MakeStatCard(s);
-        }
+        frozenAgents.Clear();
     }
+}
 
-    CardData MakeStatCard(StatType s)
+    // 보조: isStopped를 안전하게 호출할 수 있는지 검사
+    static bool IsUsableAgent(NavMeshAgent a)
     {
-        var r  = RollRarity();
-        int tv = UpgradeDefs.TierValue(r);
-        string title = $"{StatDisplayEN(s)} +Tier {tv}";
-        string desc  = BuildDescEN(s, tv);
-        return new CardData { kind = CardKind.Stat, stat = s, rarity = r, title = title, desc = desc, tierValue = tv };
+        // null 아님, 컴포넌트 enable, 오브젝트 활성, 실제 NavMesh 위에 배치
+        return a != null
+            && a.isActiveAndEnabled
+            && a.enabled
+            && a.gameObject.activeInHierarchy
+            && a.isOnNavMesh;
     }
-
-    // Basic-attack upgrade card
-    CardData MakeBasicAttackUpgradeCard()
-    {
-        var r  = RollRarity();
-        int tv = UpgradeDefs.TierValue(r);      // 2..6
-        int   addCount = Mathf.Max(1, tv / 2);  // 2→+1, 3→+1, 4→+2, 6→+3
-        float speedAdd = 1.0f * (tv - 1);
-        float spread   = 2.0f;
-
-        return new CardData {
-            kind = CardKind.BasicAttackUpgrade, rarity = r,
-            title = $"Basic Attack Upgrade ({r})",
-            desc  = $"Multishot +{addCount}, Projectile Speed +{speedAdd}, Spread +{spread}°",
-            multiShotAdd = addCount,
-            projSpeedAdd = speedAdd,
-            spreadAdd    = spread
-        };
-    }
-
-    // Orbital add card
-    CardData MakeOrbitAddCard()
-    {
-        var r  = RollRarity();
-        int tv = UpgradeDefs.TierValue(r);
-        int add = (tv >= 5) ? 2 : 1;
-
-        return new CardData {
-            kind = CardKind.PassiveOrbitAdd, rarity = r,
-            title = $"Add Orbital ({r})",
-            desc  = (add == 2) ? "Add 2 orbitals (spawned opposite)" : "Add 1 orbital",
-            orbitAddCount = add
-        };
-    }
-
-    // Orbital upgrade card
-    CardData MakeOrbitUpgradeCard()
-    {
-        var r  = RollRarity();
-        int tv = UpgradeDefs.TierValue(r);
-        float radAdd = 0.15f * tv;
-        float spdAdd = 20f   * (tv - 1);
-
-        return new CardData {
-            kind = CardKind.PassiveOrbitUpgrade, rarity = r,
-            title = $"Upgrade Orbitals ({r})",
-            desc  = $"Radius +{radAdd:F2}, Angular Speed +{spdAdd:F0}°/s",
-            orbitRadiusAdd = radAdd,
-            orbitSpeedAdd  = spdAdd
-        };
-    }
-
-    Rarity RollRarity()
-    {
-        int total = Mathf.Max(1, wNormal + wRare + wEpic + wLegendary);
-        int roll = Random.Range(0, total);
-        if (roll < wNormal) return Rarity.Normal; roll -= wNormal;
-        if (roll < wRare)   return Rarity.Rare;   roll -= wRare;
-        if (roll < wEpic)   return Rarity.Epic;
-        return Rarity.Legendary;
-    }
-
-    // English stat display names
-    string StatDisplayEN(StatType s)
-    {
-        switch (s)
-        {
-            case StatType.AttackDamage:      return "Attack Damage";
-            case StatType.AttackSpeed:       return "Attack Speed";
-            case StatType.MoveSpeed:         return "Move Speed";
-            case StatType.CritChance:        return "Crit Chance";
-            case StatType.CooldownReduction: return "Cooldown Reduction";
-            case StatType.Armor:             return "Armor";
-        }
-        return s.ToString();
-    }
-
-    // English descriptions
-    string BuildDescEN(StatType s, int tv)
-    {
-        switch (s)
-        {
-            case StatType.AttackDamage:      return $"+{2f*tv:F0} Attack Damage";
-            case StatType.AttackSpeed:       return $"+{0.10f*tv:F2}/s Attack Speed";
-            case StatType.MoveSpeed:         return $"+{0.25f*tv:F2} Move Speed";
-            case StatType.CritChance:        return $"+{(2f*tv):F0}% Crit Chance";
-            case StatType.CooldownReduction: return $"+{(2f*tv):F0}% Cooldown Reduction";
-            case StatType.Armor:             return $"+{1f*tv:F0} Armor";
-        }
-        return "";
-    }
-
-    // =========================
-    // ==== Bind & Apply =======
-    // =========================
-    void BindCard(CardUI ui, CardData cd)
+    void BindCard(CardUI ui, CardData cd, int index)
     {
         if (ui.title)      ui.title.text = cd.title;
         if (ui.desc)       ui.desc.text  = cd.desc;
-        if (ui.rarityText) { ui.rarityText.text = cd.rarity.ToString(); ui.rarityText.color = UpgradeDefs.RarityColor(cd.rarity); }
+        if (ui.rarityText) { ui.rarityText.text = cd.rarity.ToString(); ui.rarityText.color = CardTextUtil.RarityColor(cd.rarity); }
+
         if (ui.button)
         {
             ui.button.onClick.RemoveAllListeners();
-            var captured = cd;
-            ui.button.onClick.AddListener(() => ApplyCardAndClose(captured));
+            ui.button.onClick.AddListener(() => ApplyAndClose(index));
         }
     }
 
-    void ApplyCardAndClose(CardData cd)
+    void ApplyAndClose(int index)
     {
+        var cd = curCards[index];
+
         switch (cd.kind)
         {
             case CardKind.Stat:
-                ApplyUpgrade(cd.stat, cd.tierValue);
+                ApplyStat(cd.stat, cd.tierValue);
                 break;
 
             case CardKind.BasicAttackUpgrade:
-            {
-                if (!player) break;
-                var ranged = player.GetComponentInChildren<RangedBasicAttack>(true);
+                var ranged = player ? player.GetComponentInChildren<RangedBasicAttack>(true) : null;
                 if (ranged)
                 {
                     ranged.UpgradeMultiShot(cd.multiShotAdd);
@@ -292,31 +143,22 @@ public class LevelUpPanelController : MonoBehaviour
                     ranged.UpgradeSpread(cd.spreadAdd);
                 }
                 break;
-            }
 
-            case CardKind.PassiveOrbitAdd:
-            {
-                if (!orbitals) break;
-                if (cd.orbitAddCount >= 2) orbitals.AddPairOpposite();
-                else orbitals.AddOne();
+            case CardKind.PassiveUnlock:
+                passiveMgr?.Unlock(cd.passiveType);
                 break;
-            }
 
-            case CardKind.PassiveOrbitUpgrade:
-            {
-                if (!orbitals) break;
-                if (cd.orbitRadiusAdd != 0f) orbitals.UpgradeRadius(cd.orbitRadiusAdd);
-                if (cd.orbitSpeedAdd  != 0f) orbitals.UpgradeSpeed(cd.orbitSpeedAdd);
+            case CardKind.PassiveUpgrade:
+                passiveMgr?.Upgrade(cd.passiveType, 1);
                 break;
-            }
         }
 
         Close();
     }
 
-    void ApplyUpgrade(StatType s, int tv)
+    void ApplyStat(StatType s, int tv)
     {
-        if (!stats) { Close(); return; }
+        if (!stats) return;
         switch (s)
         {
             case StatType.AttackDamage:      stats.attackDamage      += 2f * tv; break;
@@ -325,15 +167,6 @@ public class LevelUpPanelController : MonoBehaviour
             case StatType.CritChance:        stats.critChance         = Mathf.Clamp01(stats.critChance + 0.02f * tv); break;
             case StatType.CooldownReduction: stats.cooldownReduction  = Mathf.Clamp01(stats.cooldownReduction + 0.02f * tv); break;
             case StatType.Armor:             stats.armor             += 1f * tv; break;
-        }
-    }
-
-    void Shuffle<T>(T[] arr)
-    {
-        for (int i = 0; i < arr.Length; i++)
-        {
-            int j = Random.Range(i, arr.Length);
-            (arr[i], arr[j]) = (arr[j], arr[i]);
         }
     }
 }
